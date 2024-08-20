@@ -36,3 +36,10 @@ The following technologies are used in the project:
    ```bsha
    mvn clean install
    mvn exec:java
+
+## Achievements
+
+- Effective implementation of OOP and S.O.L.I.D. principles.
+- Creating a structured and scalable architecture.
+- Optimization of database performance.
+- Improved skills in working with Spring framework.
