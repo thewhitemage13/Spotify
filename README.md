@@ -21,22 +21,6 @@ The following technologies are used in the project:
 - Maven installed.
 - PostgreSQL installed.
 
-#### Installation Steps
-
-1. Clone the repository to your local machine:
-   ```bash
-   git clone https://github.com/yourusername/mp3-player.git
-   cd mp3-player
-2. Configure the PostgreSQL database:
-   ```bsha
-   - Scrape the table: https://github.com/thewhitemage13/Spotify/blob/main/Spotify/DB/SpotifySQL.sql
-   - Create a new database: CREATE DATABASE mp3playerdb;
-   - Set up the database connection configuration in the application.properties file.
-3. Соберите и запустите проект с помощью Maven:
-   ```bsha
-   mvn clean install
-   mvn exec:java
-
 ## Achievements
 
 - Effective implementation of OOP and S.O.L.I.D. principles.
