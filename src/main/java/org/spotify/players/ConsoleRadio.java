@@ -5,7 +5,6 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
 import org.spotify.entities.Radio;
-import org.spotify.managers.RadioManager;
 import org.spotify.services.RadioService;
 
 import java.io.BufferedInputStream;
@@ -23,7 +22,7 @@ public class ConsoleRadio {
         System.out.print("Enter Radio Id: ");
         Long radioId = scanner.nextLong();
 
-        Radio radio = radioService.findRadioById(radioId);
+        Radio radio = radioService.findById(radioId);
 
         try {
             URL url = new URL(radio.getRadioUrl());

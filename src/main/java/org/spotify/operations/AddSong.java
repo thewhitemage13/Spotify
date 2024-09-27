@@ -1,17 +1,19 @@
 package org.spotify.operations;
 
 import org.spotify.db.dao.SongDao;
+import org.spotify.entities.Performer;
 import org.spotify.enums.Genre;
 import org.spotify.entities.Song;
 import org.spotify.enums.TypeOfSong;
-import org.spotify.validate.PerformerValidate;
+import org.spotify.services.PerformerService;
+import org.spotify.services.SongService;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class AddSong {
-    private final SongDao songDao = new SongDao();
-    private final PerformerValidate performerValidate = new PerformerValidate();
+    private final SongService songService = new SongService();
+    public final PerformerService performerService = new PerformerService();
 
     public Song add(Song song) {
         return getSong(song);
@@ -24,14 +26,18 @@ public class AddSong {
 
     private Song getSong(Song song) {
         Scanner scanner = new Scanner(System.in);
-
         TypeOfSong[] typeOfSongs = TypeOfSong.values();
-
         Genre[] genres = Genre.values();
 
-        System.out.print("Input name: ");
+        System.out.print("Input Performer Name: ");
+        String performerName = scanner.nextLine();
+        Performer performer = performerService
+                .findByName(performerName);
+
+        song.setPerformer(performer);
+
+        System.out.print("Enter Song Name: ");
         String name = scanner.nextLine();
-        performerValidate.validatePerformer(name);
         song.setName(name);
         System.out.print("All type of song:");
         System.out.println(Arrays.toString(typeOfSongs));
@@ -57,7 +63,7 @@ public class AddSong {
         Genre genre = Genre.valueOf(scanner.nextLine());
         song.setGenre(genre);
 
-        songDao.saveSong(song);
+        songService.save(song);
 
         return song;
     }

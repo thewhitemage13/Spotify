@@ -4,27 +4,16 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <!-- Database connection settings -->
     <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
     <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/spotify</property>
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">root</property>
-
-    <!-- Specify HikariCP as the connection pool -->
     <property name="hibernate.hikari.maximumPoolSize">10</property>
     <property name="hibernate.hikari.connectionTimeout">20000</property>
-
-    <!-- Specify dialect -->
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
-
-    <!-- Automatically update the schema -->
     <property name="hibernate.hbm2ddl.auto">update</property>
-
-    <!-- Show SQL -->
     <property name="show_sql">true</property>
     <property name="format_sql">true</property>
-
-    <!-- Mapping files -->
     <mapping class="org.spotify.entities.Song"/>
     <mapping class="org.spotify.entities.MusicCollection"/>
     <mapping class="org.spotify.entities.Performer"/>

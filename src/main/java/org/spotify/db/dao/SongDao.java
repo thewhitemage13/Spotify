@@ -1,14 +1,11 @@
 package org.spotify.db.dao;
 
-import lombok.Cleanup;
 import org.spotify.db.util.HibernateUtil;
 import org.spotify.entities.Song;
 
-import java.util.Optional;
-
 public class SongDao {
 
-    public void saveSong(Song song) {
+    public void save(Song song) {
         try (var session = HibernateUtil.buildSessionFactory().openSession()) {
             session.beginTransaction();
             session.save(song);
@@ -16,7 +13,7 @@ public class SongDao {
         }
     }
 
-    public void deleteSong(Song song) {
+    public void delete(Song song) {
         try (var session = HibernateUtil.buildSessionFactory().openSession()) {
             session.beginTransaction();
             session.delete(song);
@@ -24,21 +21,21 @@ public class SongDao {
         }
     }
 
-    public Optional<Song> findSongById(Long id) {
+    public Song findById(Long id) {
         try (var session = HibernateUtil.buildSessionFactory().openSession()) {
             session.beginTransaction();
             var query = session.createQuery("from Song s where s.song_id = :id", Song.class);
             query.setParameter("id", id);
             Song song = query.uniqueResult();
             session.getTransaction().commit();
-            return Optional.ofNullable(song);
+            return song;
         }
     }
 
-    public void deleteSongById(Long id) {
+    public void deleteById(Long id) {
         try (var session = HibernateUtil.buildSessionFactory().openSession()) {
             session.beginTransaction();
-            var query = session.createQuery("delete from Song s where s.songId = :id");
+            var query = session.createQuery("delete from Song s where s.song_id = :id");
             query.setParameter("id", id);
             query.executeUpdate();
             session.getTransaction().commit();

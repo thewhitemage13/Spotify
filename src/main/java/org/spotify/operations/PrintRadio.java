@@ -12,7 +12,7 @@ public class PrintRadio {
     public void print() {
         System.out.print("Enter radio Id: ");
         Long radioId = scanner.nextLong();
-        Radio radio = radioService.findRadioById(radioId);
+        Radio radio = radioService.findById(radioId);
         System.out.println(radio);
     }
 

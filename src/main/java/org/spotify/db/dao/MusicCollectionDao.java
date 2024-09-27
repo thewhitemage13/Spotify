@@ -1,15 +1,14 @@
 package org.spotify.db.dao;
 
-import lombok.Cleanup;
 import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.spotify.db.util.HibernateUtil;
 import org.spotify.entities.MusicCollection;
 
-import java.util.Optional;
-
 public class MusicCollectionDao {
 
-    public void saveMusicCollection(MusicCollection musicCollection) {
+    public void save(MusicCollection musicCollection) {
         try (var session = HibernateUtil.buildSessionFactory().openSession()) {
             session.beginTransaction();
             session.save(musicCollection);
@@ -17,7 +16,7 @@ public class MusicCollectionDao {
         }
     }
 
-    public void deleteMusicCollection(MusicCollection musicCollection) {
+    public void delete(MusicCollection musicCollection) {
         try (var session = HibernateUtil.buildSessionFactory().openSession()) {
             session.beginTransaction();
             session.delete(musicCollection);
@@ -25,18 +24,20 @@ public class MusicCollectionDao {
         }
     }
 
-    public Optional<MusicCollection> findMusicCollectionById(Long id) {
-        try (var session = HibernateUtil.buildSessionFactory().openSession()) {
-            session.beginTransaction();
-            var query = session.createQuery("from MusicCollection where music_collection_id = :id", MusicCollection.class);
-            query.setParameter("id", id);
-            var musicCollection = query.uniqueResult();
-            session.getTransaction().commit();
-            return Optional.ofNullable(musicCollection);
+    public MusicCollection findById(Long id) {
+        try (Session session = HibernateUtil.buildSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            MusicCollection musicCollection = session.get(MusicCollection.class, id);
+            Hibernate.initialize(musicCollection.getSong());
+            tx.commit();
+            return musicCollection;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         }
     }
 
-    public void deleteMusicCollectionById(Long id) {
+    public void deleteById(Long id) {
         try (var session = HibernateUtil.buildSessionFactory().openSession()) {
             session.beginTransaction();
             var query = session.createQuery("delete from MusicCollection where music_collection_id = :id");

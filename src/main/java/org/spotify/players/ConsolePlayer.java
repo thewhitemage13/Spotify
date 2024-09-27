@@ -18,7 +18,7 @@ public class ConsolePlayer {
     public void playMusicCollection() {
         System.out.print("Enter Music Collection Id: ");
         Long musicCollectionId = scanner.nextLong();
-        MusicCollection musicCollection = musicCollectionService.findByMusicCollectionId(musicCollectionId);
+        MusicCollection musicCollection = musicCollectionService.findById(musicCollectionId);
 
         for (int i = 0; i < musicCollection.getSong().size(); i++) {
             System.out.print("There's a song playing right now: " + musicCollection.getSong().get(i).getName());
@@ -34,6 +34,7 @@ public class ConsolePlayer {
         System.out.print("Enter song Id: ");
         Long songId = scanner.nextLong();
         Song song = songService.findSongById(songId);
+        System.out.println(song);
         playerProcessor(song);
     }
 
@@ -41,16 +42,21 @@ public class ConsolePlayer {
         try (FileInputStream fileInputStream = new FileInputStream(song.getFilePath())) {
             Player player = new Player(fileInputStream);
             System.out.println("Playback has started. Press Enter to stop.");
-            new Thread(() -> {
+
+            Thread playThread = new Thread(() -> {
                 try {
                     player.play();
                 } catch (JavaLayerException e) {
                     System.err.println("Audio playback error.");
                     e.printStackTrace();
                 }
-            }).start();
+            });
 
+            playThread.start();
             scanner.nextLine();
+            scanner.nextLine();
+            playThread.join();
+
             player.close();
         } catch (FileNotFoundException e) {
             System.err.println("File not found.");
@@ -61,6 +67,10 @@ public class ConsolePlayer {
         } catch (IOException e) {
             System.err.println("I/O error.");
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            System.err.println("Playback interrupted.");
+            e.printStackTrace();
         }
     }
+
 }

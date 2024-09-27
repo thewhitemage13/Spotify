@@ -39,6 +39,16 @@ public class Performer {
         this.musicCollection.remove(musicCollection);
     }
 
+    public void add(Song song) {
+        song.setPerformer(this);
+        this.songs.add(song);
+    }
+
+    public void remove(Song song) {
+        song.setPerformer(null);
+        this.songs.remove(song);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

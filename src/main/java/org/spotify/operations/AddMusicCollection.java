@@ -1,12 +1,11 @@
 package org.spotify.operations;
 
-import org.spotify.db.dao.MusicCollectionDao;
 import org.spotify.entities.MusicCollection;
 import org.spotify.entities.Performer;
 import org.spotify.entities.Song;
 import org.spotify.enums.TypeOfMusicCollection;
+import org.spotify.services.MusicCollectionService;
 import org.spotify.services.PerformerService;
-import org.spotify.validate.PerformerValidate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -14,19 +13,21 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class AddMusicCollection {
-    private final MusicCollectionDao musicCollectionDao = new MusicCollectionDao();
+    private final MusicCollectionService musicCollectionService = new MusicCollectionService();
     private final PerformerService performerService = new PerformerService();
-    private final PerformerValidate performerValidate = new PerformerValidate();
 
     public MusicCollection add() {
         MusicCollection musicCollection = new MusicCollection();
         TypeOfMusicCollection[] types = TypeOfMusicCollection.values();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Please enter the performer name: ");
+        System.out.print("Please enter the performer name: ");
         String performerName = scanner.nextLine();
-        performerValidate.validatePerformer(performerName);
-        Performer performer = performerService.findPerformerByName(performerName);
+
+        Performer performer = performerService
+                .findByName(performerName);
+
+        musicCollection.setPerformer(performer);
 
         System.out.print("Please enter the name of the album: ");
         String name = scanner.nextLine();
@@ -56,7 +57,7 @@ public class AddMusicCollection {
 
         addSongsToAlbum(musicCollection);
 
-        musicCollectionDao.saveMusicCollection(musicCollection);
+        musicCollectionService.save(musicCollection);
         return musicCollection;
     }
 

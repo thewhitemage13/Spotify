@@ -2,14 +2,27 @@ package org.spotify.services;
 
 import org.spotify.db.dao.SongDao;
 import org.spotify.entities.Song;
-import org.spotify.exceptions.SongNotFoundException;
 
 public class SongService {
     private final SongDao songDao = new SongDao();
 
     public Song findSongById(Long songId) {
-        return songDao.findSongById(songId)
-                .orElseThrow(() -> new SongNotFoundException("Song with id = %s not found"
-                        .formatted(songId)));
+         Song song = songDao.findById(songId);
+         if (song == null) {
+             return null;
+         }
+         return song;
+    }
+
+    public void save(Song song) {
+        songDao.save(song);
+    }
+
+    public void delete(Song song) {
+        songDao.delete(song);
+    }
+
+    public void deleteById(Long songId) {
+        songDao.deleteById(songId);
     }
 }

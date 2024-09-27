@@ -13,7 +13,8 @@ public class MusicCollectionPrinter {
     public void print() {
         System.out.print("Enter Music Collection Id: ");
         Long musicCollectionId = scanner.nextLong();
-        MusicCollection musicCollection = musicCollectionValidate.findByMusicCollectionId(musicCollectionId);
+        MusicCollection musicCollection = musicCollectionValidate
+                .findById(musicCollectionId);
 
         System.out.println("Name: " + musicCollection.getName());
         System.out.println("Type of collection: " + musicCollection.getTypeOfCollection());

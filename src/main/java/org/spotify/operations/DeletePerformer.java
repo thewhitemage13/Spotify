@@ -1,17 +1,18 @@
 package org.spotify.operations;
 
-import org.spotify.db.dao.PerformerDao;
+import org.spotify.services.PerformerService;
 
 import java.util.Scanner;
 
 public class DeletePerformer {
-    Scanner scanner = new Scanner(System.in);
-    PerformerDao performerDao = new PerformerDao();
+    private final Scanner scanner = new Scanner(System.in);
+    private final PerformerService performerService = new PerformerService();
 
     public void delete() {
         System.out.print("Enter performer name: ");
         String name = scanner.nextLine();
-        performerDao.deletePerformerByName(name);
+
+        performerService.deleteByName(name);
         System.out.println("Performer deleted");
     }
 }

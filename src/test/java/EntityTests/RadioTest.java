@@ -1,4 +1,4 @@
-package PerformerTests;
+package EntityTests;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
