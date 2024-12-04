@@ -1,44 +1,82 @@
 package ServicesTests;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.spotify.db.dao.Repository;
 import org.spotify.entities.Radio;
 import org.spotify.services.RadioService;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
 public class RadioServiceTest {
-    Radio radio;
-    RadioService radioService;
+    @Mock
+    private Repository<Radio> radioRepository;
+    @InjectMocks
+    private RadioService radioService;
+
     @BeforeEach
     public void setUp() {
-        radio = new Radio();
-        radioService = new RadioService();
+        MockitoAnnotations.openMocks(this);
     }
-    @Test
-    public void testFindRadioByIdAndSave() {
-        radio.setRadioUrl("sdoijvwiev");
-        radio.setCountry("Ukraine");
-        radio.setCity("Odessa");
-        radio.setRadioName("FSXS");
-        radioService.save(radio);
 
-        Radio find = radioService.findById(radio.getRadioId());
-        Assertions.assertEquals(radio.getRadioUrl(), find.getRadioUrl());
-        Assertions.assertEquals(radio.getCountry(), find.getCountry());
-        Assertions.assertEquals(radio.getCity(), find.getCity());
-        Assertions.assertEquals(radio.getRadioName(), find.getRadioName());
+    @Test
+    public void shouldSaveRadio() {
+        Radio radio = new Radio();
+        radioService.save(radio);
+        verify(radioRepository, times(1)).save(radio);
     }
+
     @Test
-    public void testDeleteRadioById() {
-        radio.setRadioUrl("acwcqwqw");
-        radio.setCountry("Ukraine");
-        radio.setCity("Odessa");
-        radio.setRadioName("wqcqw");
-        radioService.save(radio);
+    public void shouldUpdateRadio() {
+        Radio radio = new Radio();
+        radioService.update(radio);
+        verify(radioRepository, times(1)).update(radio);
+    }
 
-        radioService.deleteById(radio.getRadioId());
+    @Test
+    public void shouldDeleteRadioByIdWhenExists() {
+        Long radioId = 1L;
+        Radio radio = new Radio();
+        when(radioRepository.findById(radioId)).thenReturn(radio);
+        radioService.delete(radioId);
+        verify(radioRepository, times(1)).delete(radio);
+    }
 
-        Radio find = radioService.findById(radio.getRadioId());
-        Assertions.assertNull(find);
+    @Test
+    public void shouldNotDeleteRadioIfNotFound() {
+        Long radioId = 1L;
+        when(radioRepository.findById(radioId)).thenReturn(null);
+        radioService.delete(radioId);
+        verify(radioRepository, never()).delete(any(Radio.class));
+    }
+
+    @Test
+    void shouldFindAllPerformers() {
+        List<Radio> radios = Arrays.asList(new Radio(), new Radio());
+        when(radioRepository.findAll()).thenReturn(radios);
+
+        List<Radio> result = radioService.findAll();
+
+        assertEquals(radios, result);
+        verify(radioRepository, times(1)).findAll();
+    }
+
+    @Test
+    void shouldFindPerformerById() {
+        Long radioId = 1L;
+        Radio radio = new Radio();
+        when(radioRepository.findById(radioId)).thenReturn(radio);
+
+        Radio result = radioService.findById(radioId);
+
+        assertEquals(radio, result);
+        verify(radioRepository, times(1)).findById(radioId);
     }
 }

@@ -1,51 +1,86 @@
 package ServicesTests;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.spotify.db.dao.Repository;
 import org.spotify.entities.Performer;
-import org.spotify.enums.Genre;
 import org.spotify.services.PerformerService;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 public class PerformerServiceTest {
-    Performer performer;
-    PerformerService performerService;
+    @Mock
+    private Repository<Performer> performerRepo;
+    @InjectMocks
+    private PerformerService performerService;
+
     @BeforeEach
     public void setUp() {
-        performer = new Performer();
-        performerService = new PerformerService();
+        MockitoAnnotations.openMocks(this);
     }
-    @Test
-    public void testSavePerformer() {
-        performer.setName("Alex");
-        performer.setGenre(Genre.HipHopRap);
-        performerService.save(performer);
 
-        Performer find = performerService.findByName("Alex");
-        Assertions.assertEquals("Alex", find.getName());
-        Assertions.assertEquals(Genre.HipHopRap, find.getGenre());
+    @Test
+    void shouldSavePerformer() {
+        Performer performer = new Performer();
+        performerService.save(performer);
+        verify(performerRepo, times(1)).save(performer);
     }
+
     @Test
-    public void testDeletePerformer() {
-        performer.setName("Alex");
-        performer.setGenre(Genre.HipHopRap);
-        performerService.save(performer);
-
-        performerService.delete(performer);
-
-        Performer find = performerService.findByName("Alex");
-        Assertions.assertNull(find);
+    void shouldUpdatePerformer() {
+        Performer performer = new Performer();
+        performerService.update(performer);
+        verify(performerRepo, times(1)).update(performer);
     }
+
     @Test
-    public void testDeletePerformerByName() {
-        performer.setName("Alex");
-        performer.setGenre(Genre.HipHopRap);
-        performerService.save(performer);
+    void shouldDeletePerformerByIdWhenExists() {
+        Long performerId = 1L;
+        Performer performer = new Performer();
+        when(performerRepo.findById(performerId)).thenReturn(performer);
 
-        performerService.deleteByName(performer.getName());
+        performerService.delete(performerId);
 
-        Performer find = performerService.findByName("Alex");
-        Assertions.assertNull(find);
+        verify(performerRepo, times(1)).delete(performer);
+    }
+
+    @Test
+    void shouldNotDeletePerformerIfNotFound() {
+        Long performerId = 1L;
+        when(performerRepo.findById(performerId)).thenReturn(null);
+
+        performerService.delete(performerId);
+
+        verify(performerRepo, never()).delete(any(Performer.class));
+    }
+
+    @Test
+    void shouldFindAllPerformers() {
+        List<Performer> performers = Arrays.asList(new Performer(), new Performer());
+        when(performerRepo.findAll()).thenReturn(performers);
+
+        List<Performer> result = performerService.findAll();
+
+        assertEquals(performers, result);
+        verify(performerRepo, times(1)).findAll();
+    }
+
+    @Test
+    void shouldFindPerformerById() {
+        Long performerId = 1L;
+        Performer performer = new Performer();
+        when(performerRepo.findById(performerId)).thenReturn(performer);
+
+        Performer result = performerService.findById(performerId);
+
+        assertEquals(performer, result);
+        verify(performerRepo, times(1)).findById(performerId);
     }
 }
