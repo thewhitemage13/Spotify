@@ -1,0 +1,11 @@
+org.spotify
+org.spotify.consolemenu
+org.spotify.db.dao
+org.spotify.db.util
+org.spotify.entities
+org.spotify.enums
+org.spotify.exceptions
+org.spotify.operations
+org.spotify.players
+org.spotify.services
+org.spotify.services.interfaces
