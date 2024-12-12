@@ -68,7 +68,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Links 🔗
 - [Documentation](https://thewhitemage13.github.io/Spotify/)
-- [Email](lmecomcompany@gmail.com)
 
 ---
 Made with ❤️ by [Mukhammed Lolo](https://github.com/thewhitemage13).
