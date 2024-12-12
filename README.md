@@ -63,8 +63,11 @@ To run the application, follow these steps:
 - Introduce streaming capabilities for online music playback.
 - Implement advanced search and filter options.
 
-## License
+## License 📑
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+## Links 🔗
+- [Documentation](https://thewhitemage13.github.io/Spotify/)
+
 ---
-Made with ❤️ by [Your Name](https://github.com/yourusername).
+Made with ❤️ by [Mukhammed Lolo](https://github.com/thewhitemage13).
