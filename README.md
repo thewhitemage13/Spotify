@@ -38,7 +38,7 @@ To run the application, follow these steps:
    - Create a PostgreSQL database.
    - Update the database connection details in the `hibernate.cfg.xml` file.
 
-   ```XML
+```XML
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
@@ -57,7 +57,7 @@ To run the application, follow these steps:
     <mapping class="org.spotify.entities.Radio"/>
   </session-factory>
 </hibernate-configuration>
-   ```
+```
 
 4. **Build the Project:**
    ```bash
