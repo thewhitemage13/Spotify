@@ -36,7 +36,28 @@ To run the application, follow these steps:
 
 3. **Set Up Database:**
    - Create a PostgreSQL database.
-   - Update the database connection details in the `application.properties` file.
+   - Update the database connection details in the `hibernate.cfg.xml` file.
+
+```XML
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/spotify</property>
+    <property name="hibernate.connection.username">postgres</property>
+    <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.hikari.maximumPoolSize">10</property>
+    <property name="hibernate.hikari.connectionTimeout">20000</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="show_sql">true</property>
+    <property name="format_sql">true</property>
+    <mapping class="org.spotify.entities.Song"/>
+    <mapping class="org.spotify.entities.MusicCollection"/>
+    <mapping class="org.spotify.entities.Performer"/>
+    <mapping class="org.spotify.entities.Radio"/>
+  </session-factory>
+</hibernate-configuration>
+```
 
 4. **Build the Project:**
    ```bash
@@ -60,7 +81,6 @@ To run the application, follow these steps:
 
 ## Future Improvements
 - Add a graphical user interface (GUI) for enhanced usability.
-- Introduce streaming capabilities for online music playback.
 - Implement advanced search and filter options.
 
 ## License 📑
